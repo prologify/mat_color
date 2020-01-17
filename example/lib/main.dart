@@ -52,8 +52,8 @@ class _MyHomePageState extends State<MyHomePage> {
       'accent': _mainColor,
     });
 
-    final defaultKey = palette['accent']['default'];
-    final mainTextColor = palette['accent']['contrast'][defaultKey];
+    final defaultKey = palette['accent'].primaryIndex;
+    final mainTextColor = palette['accentContrast'].primaryColor;
 
     return Scaffold(
       body: LayoutBuilder(
@@ -109,7 +109,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       children: colorKeys.map((int key) {
                         final Color color = palette['accent'][key];
                         final Color textColor =
-                            palette['accent']['contrast'][key];
+                            palette['accentContrast'][key];
 
                         return GestureDetector(
                           onTap: () {

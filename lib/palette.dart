@@ -142,7 +142,7 @@ palette(Color $pColor) {
   final $dbIndex = Db[$index];
   var $r = 100.0;
 
-  final $newColors = [];
+  final $newColors = <Color>[];
 
   for (var $colorIndex = 0; $colorIndex < $colors.length; $colorIndex++) {
     final $color = $colors[$colorIndex];

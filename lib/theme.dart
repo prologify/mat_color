@@ -30,46 +30,62 @@ Color chooseContrastColor(Color $color) {
   }
 }
 
-theme(Map<String, Color> $themeColors) {
-  var $result = {};
+class ThemeColor extends MaterialColor {
+  int primaryIndex;
+
+  ThemeColor(this.primaryIndex, Map<int, Color> swatch)
+      : super(swatch[primaryIndex].value, swatch);
+
+  Color get primaryColor {
+    return this[primaryIndex];
+  }
+}
+
+Map<String, ThemeColor> theme(Map<String, Color> $themeColors) {
+  var $result = <String, ThemeColor>{};
 
   for (MapEntry<String, Color> value in $themeColors.entries.toList()) {
     final $name = value.key;
     final $baseColor = value.value;
     final p = palette($baseColor);
 
-    final colors = p['colors'];
+    final List<Color> colors = p['colors'];
+    final contrastColors = colors.map(chooseContrastColor).toList();
     final defaultIndex = p['defaultIndex'];
 
-    var $colorSet = {};
-    var $contrast = {};
-
-    for (var $i = 0; $i < $colorKeys.length; $i++) {
-      final $key = $colorKeys[$i];
-      final $value = colors[$i];
-      $colorSet = {...$colorSet, $key: $value};
-      $contrast = {...$contrast, $key: chooseContrastColor($value)};
-
-      if ($i == defaultIndex) {
-        final $darkIndex = $i + 1 > $colorKeys.length ? $i : $i + 1;
-        final $defaultIndex = $darkIndex - 1;
-        final $lightIndex = $darkIndex - 2;
-
-        $colorSet = {
-          ...$colorSet,
-          'default': $colorKeys[$defaultIndex],
-          'dark': $darkIndex > -1 && $darkIndex < $colorKeys.length
-              ? $colorKeys[$darkIndex]
-              : $colorKeys[$defaultIndex],
-          'light': $lightIndex > -1 && $lightIndex < $colorKeys.length
-              ? $colorKeys[$lightIndex]
-              : $colorKeys[$defaultIndex]
-        };
-      }
-    }
-
-    $colorSet = {...$colorSet, 'contrast': $contrast};
-    $result = {...$result, $name: $colorSet};
+    $result = {
+      ...$result,
+      $name: ThemeColor(
+        $colorKeys[defaultIndex],
+        {
+          50: colors[0],
+          100: colors[1],
+          200: colors[2],
+          300: colors[3],
+          400: colors[4],
+          500: colors[5],
+          600: colors[6],
+          700: colors[7],
+          800: colors[8],
+          900: colors[9]
+        },
+      ),
+      '${$name}Contrast': ThemeColor(
+        $colorKeys[defaultIndex],
+        {
+          50: contrastColors[0],
+          100: contrastColors[1],
+          200: contrastColors[2],
+          300: contrastColors[3],
+          400: contrastColors[4],
+          500: contrastColors[5],
+          600: contrastColors[6],
+          700: contrastColors[7],
+          800: contrastColors[8],
+          900: contrastColors[9]
+        },
+      ),
+    };
   }
 
   return $result;
