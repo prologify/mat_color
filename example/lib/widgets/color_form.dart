@@ -92,6 +92,7 @@ class _ColorFormState extends State<ColorForm> {
               child: Slider(
                 min: 0,
                 max: 255,
+                divisions: 255,
                 onChanged: (value) => setState(() {
                   _redSliderValue = value.floor().toDouble();
 
@@ -118,13 +119,13 @@ class _ColorFormState extends State<ColorForm> {
               child: Slider(
                 min: 0,
                 max: 255,
+                divisions: 255,
                 onChanged: (value) => setState(() {
                   _greenSliderValue = value.floor().toDouble();
                   _addColor();
                 }),
                 value: _greenSliderValue,
                 activeColor: Colors.green,
-                label: '12',
               ),
             ),
           ],
@@ -144,6 +145,7 @@ class _ColorFormState extends State<ColorForm> {
               child: Slider(
                 min: 0,
                 max: 255,
+                divisions: 255,
                 onChanged: (value) => setState(() {
                   _blueSliderValue = value.floor().toDouble();
                   _addColor();

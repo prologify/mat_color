@@ -20,24 +20,65 @@ num contrast(Color $back, Color $front) {
 }
 
 Color chooseContrastColor(Color $color) {
-  final $lightContrast = contrast($color, Color(0xFFffffff));
-  final $darkContrast = contrast($color, Color(0xFF000000));
+  final $lightContrast = contrast($color, Colors.white);
+  final $darkContrast = contrast($color, Colors.black);
 
   if ($lightContrast > $darkContrast) {
-    return Color(0xFFffffff);
+    return Colors.white;
   } else {
-    return Color(0xFF262626);
+    return Colors.black;
   }
 }
 
 class ThemeColor extends MaterialColor {
   int primaryIndex;
+  Map<int, Color> contrasts;
 
-  ThemeColor(this.primaryIndex, Map<int, Color> swatch)
+  ThemeColor(this.primaryIndex, Map<int, Color> swatch, this.contrasts)
       : super(swatch[primaryIndex].value, swatch);
 
   Color get primaryColor {
     return this[primaryIndex];
+  }
+
+  get contrast50 {
+    return contrasts[50];
+  }
+
+  get contrast100 {
+    return contrasts[100];
+  }
+
+  get contrast200 {
+    return contrasts[200];
+  }
+
+  get contrast300 {
+    return contrasts[300];
+  }
+
+  get contrast400 {
+    return contrasts[400];
+  }
+
+  get contrast500 {
+    return contrasts[500];
+  }
+
+  get contrast600 {
+    return contrasts[600];
+  }
+
+  get contrast700 {
+    return contrasts[700];
+  }
+
+  get contrast800 {
+    return contrasts[800];
+  }
+
+  get contrast900 {
+    return contrasts[900];
   }
 }
 
@@ -69,9 +110,6 @@ Map<String, ThemeColor> theme(Map<String, Color> $themeColors) {
           800: colors[8],
           900: colors[9]
         },
-      ),
-      '${$name}Contrast': ThemeColor(
-        $colorKeys[defaultIndex],
         {
           50: contrastColors[0],
           100: contrastColors[1],

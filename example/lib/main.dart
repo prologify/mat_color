@@ -44,16 +44,40 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  Color _mainColor = Colors.black;
+  Color _mainColor;
+  Map<String, ThemeColor> palette;
+
+  set mainColor(Color color) {
+    _mainColor = color;
+    palette = theme({'accent': _mainColor});
+
+    final defaultKey = palette['accent'].primaryIndex;
+    final mainTextColor = palette['accent'].contrasts[defaultKey];
+
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        statusBarBrightness:
+            mainTextColor == Colors.black ? Brightness.light : Brightness.dark,
+      ),
+    );
+  }
+
+  @override
+  void initState() {
+    onChangeColor(Colors.black);
+    super.initState();
+  }
+
+  onChangeColor(Color color) {
+    setState(() {
+      mainColor = color;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final palette = theme({
-      'accent': _mainColor,
-    });
-
     final defaultKey = palette['accent'].primaryIndex;
-    final mainTextColor = palette['accentContrast'].primaryColor;
+    final mainTextColor = palette['accent'].contrasts[defaultKey];
 
     return Scaffold(
       body: LayoutBuilder(
@@ -96,8 +120,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           ],
                         ),
                         ColorForm(
-                          onChange: (Color color) =>
-                              setState(() => _mainColor = color),
+                          onChange: onChangeColor,
                         )
                       ],
                     ),
@@ -109,7 +132,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       children: colorKeys.map((int key) {
                         final Color color = palette['accent'][key];
                         final Color textColor =
-                            palette['accentContrast'][key];
+                            palette['accent'].contrasts[key];
 
                         return GestureDetector(
                           onTap: () {
